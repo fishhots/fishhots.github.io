@@ -5,7 +5,17 @@ import projectsStylesheet from "../styles/projects.css?url";
 import { Icon } from "astro-icon/components";
 import { projectEntries } from "@/core/data/projects";
 
-const getProject = (id: string) => projectEntries.find((project) => project.id === id)!;
+const fallbackProject = {
+  id: "",
+  title: "（暂无作品）",
+  type: "",
+  line: "",
+  status: "",
+  summary: "",
+  details: [] as string[]
+};
+const getProject = (id: string) =>
+  projectEntries.find((project) => project.id === id) ?? fallbackProject;
 
 const kitchenIngredients = [
   {
