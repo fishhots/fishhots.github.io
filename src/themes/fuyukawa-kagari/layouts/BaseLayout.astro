@@ -117,7 +117,7 @@ const themedNotFoundRedirectScript = `(() => {
         <section class="toy-widget music-widget" aria-label="音乐播放器">
           <div class="toy-widget-title">
             <span>♫</span>
-            <strong>Yuimi Radio</strong>
+            <strong>Radio</strong>
           </div>
           <div class="music-player-shell">
             <div class="music-cover-area">
@@ -223,14 +223,12 @@ const themedNotFoundRedirectScript = `(() => {
       </main>
       <footer class="site-footer" data-footer-timers>
         <div class="footer-inner">
-          <p class="footer-signature-line">© 2026 BY 喝益胃 / Yuimi Lab</p>
-          <p>二次元手账、开发记录、还有一点点宇宙回声。</p>
-          <p>🛰️ 旅行者一号：<time data-elapsed-from="1977-09-05T12:56:00Z" data-elapsed-mode="minute">计算中...</time> 仍在远航</p>
-          <p>🛰️ 旅行者二号：<time data-elapsed-from="1977-08-20T14:29:00Z" data-elapsed-mode="minute">计算中...</time> 仍在远航</p>
-          <p>🌸 Yuimi Lab 已落地：<time data-elapsed-from="2026-05-18T00:00:00+08:00" data-elapsed-mode="second">计算中...</time></p>
+          <p class="footer-signature-line">© 2026 BY 网畅一游 / Fish_Hot </p>
+          <p>二次元手账、开发记录。</p>
+          <p>🌸 Fish_Hot Space 已落地：<time data-elapsed-from="2026-10-01T00:00:00+08:00" data-elapsed-mode="second">计算中...</time></p>
           <p>💍 契约之吻：<time data-elapsed-from="2022-09-24T00:00:00+08:00" data-elapsed-mode="days">计算中...</time>，第二季仍未响应</p>
           <p class="footer-status-line">sakura: falling / pig: on duty / tea: warm</p>
-          <p class="manga-art-credit">插画与漫画：葉佐乃《儚いキミは猛攻をはじめる》 · 冬川篝主题手帖</p>
+          <!--<p class="manga-art-credit">插画与漫画：葉佐乃《儚いキミは猛攻をはじめる》 · 冬川篝主题手帖</p>-->
         </div>
       </footer>
     </div>
@@ -643,7 +641,7 @@ const themedNotFoundRedirectScript = `(() => {
             waifu.classList.remove("waifu-hidden");
             waifu.classList.add("waifu-active");
             anchorWaifu(waifu);
-            window.setTimeout(() => showWaifuMessage("欢迎来到 Yuimi Lab，今天也要开心写代码。"), 900);
+            window.setTimeout(() => showWaifuMessage("欢迎来到 Fish_Hot Space，今天也是援气满满的一天呢。"), 900);
             window.setTimeout(reconcileWaifuFallback, 4200);
             window.setTimeout(activateWaifuFallbackIfBlank, 12000);
           });
@@ -844,7 +842,7 @@ const themedNotFoundRedirectScript = `(() => {
           queryElements();
           const { toggle, volume, seek, track, current, duration, note, status, volumeLabel } = player.elements;
           const currentTrack = player.tracks[player.index];
-          if (track) track.textContent = currentTrack?.title ?? "Yuimi Radio";
+          if (track) track.textContent = currentTrack?.title ?? "Radio";
           if (current) current.textContent = formatAudioTime(audio.currentTime);
           if (duration) duration.textContent = formatAudioTime(audio.duration);
           if (seek && !player.seeking) {
