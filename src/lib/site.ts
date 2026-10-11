@@ -7,7 +7,7 @@ export const site = {
   nav: [
     { href: "/", label: "HOME", icon: "tabler:home-heart", hint: "front page" },
     { href: "/blog/", label: "BLOG", icon: "tabler:book-2", hint: "notes" },
-    { href: "/games/", label: "GAME", icon: "tabler:device-gamepad-2", hint: "playroom" },
+    { href: "/acgn/", label: "ACGN", icon: "tabler:device-tv-old", hint: "acgn shelf" },
     { href: "/projects/", label: "WORKS", icon: "tabler:code", hint: "projects" },
     { href: "/about/", label: "ME", icon: "tabler:user-heart", hint: "profile" }
   ]

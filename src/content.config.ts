@@ -18,4 +18,21 @@ const blog = defineCollection({
   })
 });
 
-export const collections = { blog };
+const acgn = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/acgn" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
+    seoKeywords: z.array(z.string()).default([]),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    cover: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    category: z.enum(["animation", "comic", "game", "novel"]),
+    draft: z.boolean().default(false)
+  })
+});
+
+export const collections = { blog, acgn };

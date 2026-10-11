@@ -95,7 +95,7 @@ const themedNotFoundRedirectScript = `(() => {
         <img src={kagariAssets.scrollPig} alt="" width="56" height="48" />
       </div>
     </div>
-    <aside class="toy-dock" aria-label="Yuimi Lab toy dock" transition:persist="yuimi-toy-dock">
+    <aside class="toy-dock" aria-label="Fishhots toy dock" transition:persist="yuimi-toy-dock">
       <button class="toy-dock-handle" type="button" aria-label="打开音乐与看板娘工具" title="音乐与看板娘" aria-expanded="false" aria-controls="toy-dock-panel">
         <Icon name="tabler:sparkles" aria-hidden="true" />
       </button>
@@ -132,7 +132,7 @@ const themedNotFoundRedirectScript = `(() => {
               <span class="music-cover-caption" data-music-status>待播放</span>
             </div>
             <div class="music-info-area">
-              <span class="music-meta">Yuimi playlist</span>
+              <span class="music-meta">Fishhots playlist</span>
               <p class="music-track">lofi sakura loop</p>
               <p class="music-note" data-music-note>正在读取歌单...</p>
             </div>
@@ -225,7 +225,7 @@ const themedNotFoundRedirectScript = `(() => {
         <div class="footer-inner">
           <p class="footer-signature-line">© 2026 BY 网畅一游 / Fish_Hot </p>
           <p>二次元手账、开发记录。</p>
-          <p>🌸 Fish_Hot Space 已落地：<time data-elapsed-from="2026-10-01T00:00:00+08:00" data-elapsed-mode="second">计算中...</time></p>
+          <p>🌸 Fishhots 已落地：<time data-elapsed-from="2026-10-01T00:00:00+08:00" data-elapsed-mode="second">计算中...</time></p>
           <p>💍 契约之吻：<time data-elapsed-from="2022-09-24T00:00:00+08:00" data-elapsed-mode="days">计算中...</time>，第二季仍未响应</p>
           <p class="footer-status-line">sakura: falling / pig: on duty / tea: warm</p>
           <!--<p class="manga-art-credit">插画与漫画：葉佐乃《儚いキミは猛攻をはじめる》 · 冬川篝主题手帖</p>-->
@@ -554,7 +554,7 @@ const themedNotFoundRedirectScript = `(() => {
         if (document.querySelector(".waifu-local-fallback")) return;
         const fallback = document.createElement("div");
         fallback.className = "waifu-local-fallback";
-        fallback.setAttribute("aria-label", "Yuimi Lab fallback 看板娘");
+        fallback.setAttribute("aria-label", "Fishhots fallback 看板娘");
         fallback.innerHTML = `
           <div class="waifu-local-bubble">Live2D 加载有点害羞，先由我值班。</div>
           <div class="waifu-local-character">
@@ -641,7 +641,7 @@ const themedNotFoundRedirectScript = `(() => {
             waifu.classList.remove("waifu-hidden");
             waifu.classList.add("waifu-active");
             anchorWaifu(waifu);
-            window.setTimeout(() => showWaifuMessage("欢迎来到 Fish_Hot Space，今天也是援气满满的一天呢。"), 900);
+            window.setTimeout(() => showWaifuMessage("欢迎来到 Fishhots，今天也是援气满满的一天呢。"), 900);
             window.setTimeout(reconcileWaifuFallback, 4200);
             window.setTimeout(activateWaifuFallbackIfBlank, 12000);
           });

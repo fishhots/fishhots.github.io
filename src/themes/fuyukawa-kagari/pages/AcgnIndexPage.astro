@@ -1,0 +1,300 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPublishedAcgn, acgnCategoryLabel, acgnCategoryEnLabel, ACGN_CATEGORIES } from "@/core/content/acgn";
+import { getThemePath } from "@/core/themes/registry";
+import { kagariAssets } from "../assets";
+import { Icon } from "astro-icon/components";
+import MangaArt from "../components/MangaArt.astro";
+
+const entries = (await getPublishedAcgn()).map((entry) => ({
+  ...entry,
+  cover: entry.data.cover ?? kagariAssets.heroWallpaper,
+  categoryLabel: acgnCategoryLabel[entry.data.category]
+}));
+
+const themeRoutePrefix = getThemePath("fuyukawa-kagari", "/").replace(/\/$/, "");
+---
+
+<BaseLayout title="ACGN | Fishhots" description="动画、漫画、游戏与小说的收藏与分享。">
+  <div class="manga-archive" data-acgn-archive>
+    <section class="page-title blog-hero-card">
+      <div class="blog-title-copy">
+        <p class="section-kicker">04 / The shelf</p>
+        <h1>二次元藏书架<span class="page-title-en">ACGN</span></h1>
+        <p>把喜欢的动画、漫画、游戏和小说，<br />收进同一排方格书架里。</p>
+        <span class="manga-handwritten">Dear my ACGN.</span>
+      </div>
+      <div class="blog-title-art" aria-hidden="true">
+        <MangaArt image="reading-strip" class="blog-opening-panel" eager />
+        <MangaArt image="kagari-tea" class="blog-opening-character" eager />
+        <span class="manga-page-stamp">ACGN</span>
+      </div>
+    </section>
+
+    <section class="acgn-filter" data-acgn-filter aria-label="ACGN 筛选">
+      <label class="acgn-search">
+        <Icon name="tabler:search" aria-hidden="true" />
+        <input type="search" data-acgn-search placeholder="搜索标题 / 名称..." autocomplete="off" aria-label="搜索 ACGN 收藏" />
+      </label>
+
+      <button type="button" data-acgn-category="all" aria-pressed="true"><Icon name="tabler:grid-dots" aria-hidden="true" />全部</button>
+      {
+        ACGN_CATEGORIES.map((key) => (
+          <button type="button" data-acgn-category={key} aria-pressed="false">
+            {acgnCategoryEnLabel[key]}
+            <span class="acgn-filter-cn">{acgnCategoryLabel[key]}</span>
+          </button>
+        ))
+      }
+      <p data-acgn-count aria-live="polite">{entries.length} 件收藏</p>
+    </section>
+
+    <section class="acgn-grid" aria-label="ACGN 卡片">
+      {
+        entries.map((entry) => (
+          <article class="acgn-card" data-entry-category={entry.data.category} data-entry-title={entry.data.title}>
+            <a class="acgn-card-link" href={getThemePath("fuyukawa-kagari", `/acgn/${entry.id}/`)}>
+              <div class="acgn-card-cover">
+                <img src={entry.cover} alt="" loading="lazy" decoding="async" />
+                <span class="acgn-card-badge">{entry.categoryLabel}</span>
+              </div>
+              <div class="acgn-card-body">
+                <h2>{entry.data.title}</h2>
+                <p>{entry.data.description}</p>
+              </div>
+            </a>
+          </article>
+        ))
+      }
+      {entries.length === 0 && (
+        <p class="acgn-empty">书架还是空的，先去添加一些动画、漫画、游戏或小说吧。</p>
+      )}
+      {entries.length > 0 && (
+        <p class="acgn-empty is-hidden" data-acgn-noresult>没有找到匹配的收藏，换个关键词试试。</p>
+      )}
+    </section>
+  </div>
+
+  <script is:inline data-astro-rerun>
+    (() => {
+      const filterRoot = document.querySelector("[data-acgn-filter]");
+      const searchInput = document.querySelector("[data-acgn-search]");
+      const countLabel = document.querySelector("[data-acgn-count]");
+      const noResult = document.querySelector("[data-acgn-noresult]");
+      if (!filterRoot) return;
+
+      const buttons = Array.from(filterRoot.querySelectorAll("button"));
+      const cards = Array.from(document.querySelectorAll(".acgn-card"));
+
+      let activeCategory = "all";
+      let query = "";
+
+      const applyFilter = () => {
+        const lowerQuery = query.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const title = (card.dataset.entryTitle || "").toLowerCase();
+          const matchCategory = activeCategory === "all" || card.dataset.entryCategory === activeCategory;
+          const matchQuery = lowerQuery === "" || title.includes(lowerQuery);
+          const show = matchCategory && matchQuery;
+          card.classList.toggle("is-hidden", !show);
+          if (show) visible++;
+        });
+
+        if (countLabel) {
+          const base = `${visible} 件收藏`;
+          countLabel.textContent = lowerQuery ? `${base}（匹配“${query.trim()}”）` : base;
+        }
+        if (noResult) noResult.classList.toggle("is-hidden", visible !== 0);
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          activeCategory = button.dataset.acgnCategory || "all";
+          buttons.forEach((item) => {
+            item.classList.toggle("is-active", item === button);
+            item.setAttribute("aria-pressed", String(item === button));
+          });
+          applyFilter();
+        });
+      });
+
+      searchInput?.addEventListener("input", () => {
+        query = searchInput.value || "";
+        applyFilter();
+      });
+
+      applyFilter();
+    })();
+  </script>
+
+  <style>
+    .acgn-filter {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 22px;
+    }
+
+    .acgn-search {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1 1 240px;
+      min-width: 200px;
+      padding: 8px 14px;
+      color: var(--ink-soft);
+      background: var(--paper, #fffaf1);
+      border: 1px solid rgba(49, 66, 95, 0.14);
+      border-radius: 999px;
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .acgn-search:focus-within {
+      border-color: rgba(49, 66, 95, 0.4);
+      box-shadow: var(--paper-shadow);
+    }
+
+    .acgn-search :global(svg) {
+      width: 18px;
+      height: 18px;
+      flex: none;
+    }
+
+    .acgn-search input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      font: inherit;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .acgn-search input::placeholder {
+      color: var(--ink-soft);
+      opacity: 0.7;
+    }
+
+    .acgn-filter button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      color: var(--ink);
+      background: var(--paper, #fffaf1);
+      border: 1px solid rgba(49, 66, 95, 0.14);
+      border-radius: 999px;
+      font: inherit;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .acgn-filter button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--paper-shadow);
+    }
+
+    .acgn-filter button.is-active {
+      background: var(--ink, #31425f);
+      color: #fffaf1;
+    }
+
+    .acgn-filter-cn {
+      font-size: 0.82em;
+      opacity: 0.78;
+    }
+
+    .acgn-filter p {
+      margin-left: auto;
+      color: var(--ink-soft);
+      font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+    }
+
+    .acgn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .acgn-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--paper, #fffaf1);
+      border: 1px solid rgba(49, 66, 95, 0.12);
+      box-shadow: 0 6px 18px rgba(49, 66, 95, 0.08);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+
+    .acgn-card.is-hidden {
+      display: none;
+    }
+
+    .acgn-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(49, 66, 95, 0.16);
+    }
+
+    .acgn-card-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .acgn-card-cover {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      background: rgba(49, 66, 95, 0.06);
+      overflow: hidden;
+    }
+
+    .acgn-card-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .acgn-card-badge {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      border-radius: 999px;
+      color: #fffaf1;
+      background: rgba(49, 66, 95, 0.82);
+      backdrop-filter: blur(2px);
+    }
+
+    .acgn-card-body {
+      padding: 12px 14px 16px;
+    }
+
+    .acgn-card-body h2 {
+      margin: 0 0 6px;
+      font-size: 1.02rem;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    .acgn-card-body p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .acgn-empty {
+      grid-column: 1 / -1;
+      padding: 40px 0;
+      text-align: center;
+      color: var(--ink-soft);
+    }
+  </style>
+</BaseLayout>

@@ -144,7 +144,9 @@ export default defineConfig({
           "hand-finger",
           "hand-grab",
           "tools-kitchen-2",
-          "trash"
+          "trash",
+          "device-tv-old",
+          "grid-dots"
         ],
         "simple-icons": [
           "unity",
