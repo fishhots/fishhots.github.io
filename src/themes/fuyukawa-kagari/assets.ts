@@ -5,10 +5,10 @@ export function kagariAsset(path: string) {
 }
 
 export const kagariAssets = {
-  favicon: kagariAsset("pig-favicon.png"),
-  appleTouchIcon: kagariAsset("pig-apple-touch.png"),
-  brand: kagariAsset("pig-brand.webp"),
-  scrollPig: kagariAsset("mini-pig-scroll.webp"),
+  favicon: kagariAsset("wife.png"),
+  appleTouchIcon: kagariAsset("wife.png"),
+  brand: kagariAsset("wife.webp"),
+  scrollPig: kagariAsset("wife.webp"),
   profile: kagariAsset("profile.webp"),
   heroWallpaper: kagariAsset("hero-wallpaper.webp"),
   pageBackground: kagariAsset("fuyukawa-kagari-bg.webp"),

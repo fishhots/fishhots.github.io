@@ -3,8 +3,10 @@ import expressiveCode from "astro-expressive-code";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import * as pagefind from "pagefind";
 import { fileURLToPath } from "node:url";
@@ -164,7 +166,7 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: false,
     gfm: true,
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [
       rehypeSlug,
       [
@@ -181,7 +183,8 @@ export default defineConfig({
           }
         }
       ],
-      [rehypeExpressiveCode, expressiveCodeOptions]
+      [rehypeExpressiveCode, expressiveCodeOptions],
+      rehypeKatex
     ]
   },
   devToolbar: {
